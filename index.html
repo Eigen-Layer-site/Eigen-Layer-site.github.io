@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>EigenLayer — Restaking Guide: EIGEN Token, AVS, Operators, Rewards &amp; Risks (2026)</title>
+  <meta name="description" content="Complete EigenLayer guide (2026): how restaking works, what AVS (Actively Validated Services) are, how operators and stakers earn rewards, EIGEN token utility, slashing risks, LST restaking vs native restaking, and step-by-step how to restake ETH safely.">
+  <meta name="author" content="Crypto Finance Experts">
+  <link rel="canonical" href="https://eigenlayer-guide.example.com/">
+  <link rel="icon" type="image/png" href="eig.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://eigenlayer-guide.example.com/">
+  <meta property="og:title" content="EigenLayer — Restaking, EIGEN Token, AVS &amp; Rewards Guide (2026)">
+  <meta property="og:description" content="Practical EigenLayer guide: restaking mechanics, AVS, operators, EIGEN token, slashing risks, LST vs native restaking, and how to participate safely.">
+  <meta property="og:image" content="cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EigenLayer — Restaking &amp; EIGEN Token Guide (2026)">
+  <meta name="twitter:description" content="How EigenLayer restaking works, AVS explained, EIGEN token utility, slashing risks, and step-by-step restaking guide for 2026.">
+
+  <style>
+    :root {
+      --a:    #F59E0B;
+      --a2:   #D97706;
+      --a3:   #B45309;
+      --as:   #FDE68A;
+
+      --ink:   #FFFBEB;
+      --sub:   #FEF3C7;
+      --muted: #94A3B8;
+      --dim:   #64748B;
+
+      --bg:    #080700;
+      --card:  rgba(255,255,255,.028);
+      --line:  rgba(255,255,255,.07);
+      --line-a:rgba(245,158,11,.11);
+
+      --ok:   #34D399;
+      --warn: #FBBF24;
+      --err:  #F87171;
+
+      --r:  12px;
+      --rl: 18px;
+      --gap: 1.2rem;
+      --sh: 0 8px 28px rgba(0,0,0,.55);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    html { scroll-behavior: smooth }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 800px 420px at 0%   0%,  rgba(180,83,9,.10),  transparent 55%),
+        radial-gradient(ellipse 600px 340px at 100% 10%, rgba(245,158,11,.06), transparent 50%),
+        radial-gradient(ellipse 500px 300px at 50%  98%, rgba(217,119,6,.05),  transparent 55%);
+      color: var(--muted);
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: var(--a); text-decoration: none }
+    a:hover { text-decoration: underline }
+    img { max-width: 100%; height: auto; display: block }
+    strong { color: #FEF9EC; font-weight: 600 }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.4rem }
+
+    h1,h2,h3,h4 { color: var(--ink); line-height: 1.25 }
+    h1 { font-size: clamp(2rem,5vw,3.2rem); font-weight: 800; letter-spacing: -.4px }
+    h2 { font-size: clamp(1.25rem,2.5vw,1.75rem); font-weight: 700; margin-top: 1.8rem; padding-top: .7rem; border-top: 1px solid var(--line) }
+    h3 { font-size: 1.08rem; font-weight: 700; color: var(--sub) }
+    p,li,td,th { font-size: 1rem; line-height: 1.75 }
+    .lead { font-size: 1.08rem; color: #CBD5E1 }
+
+    /* HERO */
+    header.hero { padding: clamp(2.5rem,6vw,5rem) 0 clamp(2rem,4vw,3.5rem); border-bottom: 1px solid var(--line) }
+    .hero-card {
+      background: var(--card); border: 1px solid var(--line-a);
+      border-radius: var(--rl); padding: clamp(1.4rem,3.5vw,2.2rem); box-shadow: var(--sh);
+    }
+    .brand-row { display: flex; align-items: center; gap: .9rem; margin-bottom: 1rem }
+    .brand-logo {
+      width: 54px; height: 54px; border-radius: 13px;
+      border: 1px solid rgba(245,158,11,.20); background: rgba(180,83,9,.08);
+      padding: .3rem; object-fit: contain; box-shadow: 0 6px 18px rgba(0,0,0,.40); flex: 0 0 auto;
+    }
+    .brand-label { color: var(--dim); font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .4px }
+    .brand-sub   { color: var(--muted); font-size: .85rem }
+
+    /* CTA */
+    .cta-center { display: flex; justify-content: center; margin-top: 1.6rem }
+    .cta {
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: linear-gradient(135deg, #F59E0B, #D97706 50%, #B45309);
+      color: #1c0f00; padding: 1.1rem 2.5rem;
+      border-radius: 13px; font-weight: 800; font-size: 1.05rem;
+      box-shadow: 0 0 0 1px rgba(245,158,11,.22), 0 6px 20px rgba(217,119,6,.22), 0 20px 44px rgba(180,83,9,.18);
+      border: none; cursor: pointer; text-decoration: none;
+      transition: transform .16s, box-shadow .16s, filter .16s;
+    }
+    .cta:hover {
+      transform: translateY(-3px) scale(1.02); filter: brightness(1.07);
+      text-decoration: none; color: #1c0f00;
+      box-shadow: 0 0 0 1px rgba(245,158,11,.35), 0 10px 26px rgba(217,119,6,.30), 0 26px 52px rgba(180,83,9,.24);
+    }
+
+    .note {
+      border-left: 3px solid var(--a); padding: .8rem 1rem;
+      background: rgba(180,83,9,.08); border-radius: 0 9px 9px 0;
+      color: var(--sub); margin-top: 1rem;
+    }
+
+    section.step-guide { padding: clamp(2rem,5vw,3.5rem) 0 }
+    .steps { display: grid; gap: var(--gap); grid-template-columns: 1fr }
+    .step {
+      background: var(--card); border: 1px solid var(--line);
+      border-top: 2px solid rgba(245,158,11,.22); border-radius: var(--r);
+      padding: 1.25rem; box-shadow: var(--sh); transition: transform .18s;
+    }
+    .step:hover { transform: translateY(-3px) }
+    .step .icon {
+      width: 44px; height: 44px; border-radius: 9px;
+      display: inline-grid; place-items: center;
+      background: rgba(180,83,9,.10); margin-bottom: .65rem;
+      font-weight: 800; font-size: .95rem; color: var(--a);
+      border: 1px solid rgba(245,158,11,.18);
+    }
+
+    main .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 1.4rem; margin: 1.2rem 0; box-shadow: var(--sh);
+    }
+    main .card > h2:first-child { margin-top: 0; border-top: none; padding-top: 0 }
+
+    .toc { border: 1px solid var(--line-a); background: rgba(180,83,9,.05); border-radius: var(--r); padding: 1.1rem 1.3rem }
+    .toc strong { color: var(--ink) }
+    .toc ul { margin: .5rem 0 0; padding-left: 1.1rem }
+    .toc li { margin: .28rem 0; font-size: .96rem }
+    .toc a { font-weight: 600 }
+
+    .grid-2 { display: grid; gap: var(--gap); grid-template-columns: 1fr }
+    .callout-grid { display: grid; gap: var(--gap); grid-template-columns: 1fr; margin-top: .8rem }
+    .mini { background: rgba(255,255,255,.02); border: 1px solid var(--line); border-radius: var(--r); padding: 1rem }
+    .mini h3 { margin-bottom: .35rem }
+    .kpi-badges { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .55rem }
+    .kpi-badges span {
+      border: 1px solid rgba(245,158,11,.18); background: rgba(180,83,9,.08);
+      color: var(--sub); padding: .26rem .54rem; border-radius: 999px; font-size: .87rem; font-weight: 600;
+    }
+
+    .table-wrap { overflow-x: auto; border-radius: var(--r); border: 1px solid var(--line) }
+    table { width: 100%; border-collapse: collapse; min-width: 480px }
+    th,td { padding: .8rem .95rem; border-bottom: 1px solid var(--line); text-align: left }
+    th { background: rgba(180,83,9,.07); color: var(--ink); font-weight: 700; font-size: .93rem }
+    tr.hi { background: rgba(180,83,9,.04) }
+    tr:hover td { background: rgba(255,255,255,.018) }
+    tr:last-child td { border-bottom: none }
+    .ok { color: var(--ok) } .warn { color: var(--warn) } .err { color: var(--err) }
+
+    .eeat { background: var(--card); border: 1px solid var(--line-a); border-radius: var(--r); padding: 1.4rem; box-shadow: var(--sh) }
+    .eeat > h2:first-child { margin-top: 0; border-top: none; padding-top: 0 }
+
+    .faq-item { border-bottom: 1px solid var(--line); padding: .9rem 0 }
+    .faq-item:last-child { border-bottom: none }
+    .faq-button { all: unset; display: flex; justify-content: space-between; align-items: flex-start; width: 100%; cursor: pointer; gap: 1rem }
+    .faq-button:focus-visible { outline: 2px solid var(--a); border-radius: 4px }
+    .faq-button h3 { margin: 0; font-weight: 700; font-size: 1rem; line-height: 1.4 }
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height .26s ease }
+    .faq-content.open { padding-top: .65rem }
+    .faq-plus { font-weight: 800; font-size: 1.35rem; color: var(--a); flex: 0 0 auto; line-height: 1; transition: transform .2s }
+    .faq-button[aria-expanded="true"] .faq-plus { transform: rotate(45deg) }
+
+    @media(min-width:860px){
+      .steps { grid-template-columns: repeat(4,1fr) }
+      .grid-2 { grid-template-columns: 1fr 1fr }
+      .callout-grid { grid-template-columns: 1fr 1fr }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero" role="banner">
+  <div class="container">
+    <div class="hero-card">
+      <div class="brand-row">
+        <img class="brand-logo" src="eig.png" alt="EigenLayer logo">
+        <div>
+          <div class="brand-label">Complete Restaking Guide</div>
+          <div class="brand-sub">Restaking · AVS · Operators · EIGEN Token · Slashing · Rewards</div>
+        </div>
+      </div>
+
+      <h1>EigenLayer</h1>
+      <p class="lead" style="margin-top:.7rem">
+        The complete guide to <strong>EigenLayer</strong> — Ethereum's <strong>restaking protocol</strong>
+        that allows ETH stakers and liquid staking token holders to extend Ethereum's cryptoeconomic security
+        to new decentralised applications called <strong>Actively Validated Services (AVS)</strong>.
+        Understand how <strong>restaking works</strong>, what the difference between
+        <strong>LST restaking and native restaking</strong> is, how <strong>operators and stakers earn rewards</strong>,
+        what the <strong>EIGEN token</strong> unlocks, and what <strong>slashing risks</strong> look like in practice.
+      </p>
+
+      <div class="cta-center">
+        <a href="#" class="cta" aria-label="Open EigenLayer App">
+          <span>◎</span> Open EigenLayer App
+        </a>
+      </div>
+
+      <div class="note">
+        <strong>Core concept:</strong> EigenLayer does not create new ETH or new validators.
+        It lets existing Ethereum validators opt-in to secure additional services —
+        earning extra rewards in exchange for accepting additional slashing conditions.
+        More reward potential always means more slashing exposure.
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STEPS -->
+<section class="step-guide" aria-labelledby="how-works">
+  <div class="container">
+    <h2 id="how-works" style="margin-top:0;border-top:none;padding-top:0">
+      How EigenLayer Works: Restake → Delegate → Validate AVS → Earn Rewards
+    </h2>
+    <div class="steps" role="list">
+      <article class="step" role="listitem">
+        <div class="icon">01</div>
+        <h3>Restake ETH or LSTs</h3>
+        <p>Deposit ETH (via native restaking) or liquid staking tokens (stETH, rETH, cbETH) into EigenLayer smart contracts. Your stake is now eligible to be committed to secure AVS services on top of Ethereum.</p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">02</div>
+        <h3>Delegate to an operator</h3>
+        <p>Choose an operator — a professional node runner who actively validates AVS services. Your delegated stake backs their operations. Operators set their own fee rates and choose which AVS services to run.</p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">03</div>
+        <h3>Operators validate AVS</h3>
+        <p>Operators run the software required by each AVS they've opted into — data availability layers, oracle networks, bridges, and other decentralised services that need cryptoeconomic security to function.</p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">04</div>
+        <h3>Earn rewards — accept slashing</h3>
+        <p>Stakers and operators earn AVS rewards (paid in AVS tokens or ETH). In exchange, both accept that malicious or erroneous operator behaviour can result in slashing of restaked ETH — the security guarantee AVS services pay for.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="container" role="main">
+
+  <section class="card toc" aria-label="Table of Contents">
+    <strong>On this page — EigenLayer:</strong>
+    <ul>
+      <li><a href="#overview">What is EigenLayer and what problem does restaking solve</a></li>
+      <li><a href="#avs">Actively Validated Services (AVS): what they are and examples</a></li>
+      <li><a href="#restaking-types">LST restaking vs native restaking: key differences</a></li>
+      <li><a href="#operators">Operators: who they are, what they do, and how to choose</a></li>
+      <li><a href="#eigen">EIGEN token: utility, intersubjective slashing, and staking</a></li>
+      <li><a href="#rewards">EigenLayer rewards: how stakers and operators earn</a></li>
+      <li><a href="#slashing">Slashing on EigenLayer: conditions, severity, and what's at risk</a></li>
+      <li><a href="#how-to">How to restake on EigenLayer: step-by-step guide</a></li>
+      <li><a href="#safety">EigenLayer risks: slashing, smart-contract, and operator risk</a></li>
+      <li><a href="#comparison">EigenLayer vs Symbiotic vs Karak: restaking protocol comparison</a></li>
+      <li><a href="#best-practices">Best practices for restakers and delegators</a></li>
+      <li><a href="#troubleshooting">Troubleshooting: missing rewards, withdrawal queues, delegation issues</a></li>
+      <li><a href="#eeat">Authoritative sources &amp; references</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="card" id="overview">
+    <h2>What Is EigenLayer and What Problem Does Restaking Solve?</h2>
+    <p>
+      Every new decentralised protocol — a data availability layer, a decentralised sequencer,
+      an oracle network, a cross-chain bridge — needs cryptoeconomic security to be trustworthy.
+      Traditionally, each protocol bootstraps its own validator set and token, forcing it to
+      compete for security capital from scratch. This is expensive, slow, and results in fragmented,
+      under-secured ecosystems.
+    </p>
+    <p>
+      <strong>EigenLayer</strong> solves this by allowing Ethereum validators and ETH stakers to
+      <strong>restake</strong> — extending Ethereum's already-enormous security pool to new services
+      without requiring those services to recruit and incentivise a new validator set.
+      A new AVS can launch with billions of dollars of cryptoeconomic security on day one
+      by simply integrating with EigenLayer.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>For ETH stakers</h3>
+        <p style="color:var(--muted)">Earn additional rewards on top of existing ETH staking yield by opting your stake into securing AVS services. No new capital required — the same ETH earns more.</p>
+        <div class="kpi-badges"><span>Extra yield</span><span>Same ETH</span><span>Opt-in</span></div>
+      </div>
+      <div class="mini">
+        <h3>For AVS builders</h3>
+        <p style="color:var(--muted)">Launch a new decentralised service with Ethereum-grade cryptoeconomic security immediately — without bootstrapping your own validator network or token from zero.</p>
+        <div class="kpi-badges"><span>Instant security</span><span>No bootstrapping</span><span>ETH-backed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVS -->
+  <section class="card" id="avs">
+    <h2>Actively Validated Services (AVS): What They Are and Real-World Examples</h2>
+    <p>
+      An <strong>Actively Validated Service (AVS)</strong> is any decentralised system that requires
+      a network of validators to perform tasks and wants those validators to put up cryptoeconomic stake
+      as a commitment to honest behaviour. EigenLayer provides the infrastructure to recruit, coordinate,
+      and slash those validators using restaked ETH.
+    </p>
+
+    <div class="table-wrap">
+      <table aria-label="AVS types and examples">
+        <thead>
+          <tr><th>AVS category</th><th>What it does</th><th>Example protocols</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>Data availability layers</td>
+            <td>Store and serve rollup transaction data with availability guarantees</td>
+            <td>EigenDA (Eigen Labs' own AVS)</td>
+          </tr>
+          <tr>
+            <td>Decentralised sequencers</td>
+            <td>Order and finalise L2 transactions in a decentralised, censorship-resistant way</td>
+            <td>Various L2 sequencer projects</td>
+          </tr>
+          <tr class="hi">
+            <td>Oracle networks</td>
+            <td>Deliver off-chain price and data feeds on-chain with economic security</td>
+            <td>Multiple oracle AVS integrations</td>
+          </tr>
+          <tr>
+            <td>Cross-chain bridges</td>
+            <td>Verify cross-chain message passing with validator-backed security</td>
+            <td>Bridge protocols using EigenLayer security</td>
+          </tr>
+          <tr class="hi">
+            <td>Keeper networks</td>
+            <td>Automate on-chain actions (liquidations, rebalancing) with committed operators</td>
+            <td>Automation AVS protocols</td>
+          </tr>
+          <tr>
+            <td>Coprocessors / ZK provers</td>
+            <td>Outsource heavy computation off-chain with on-chain verification</td>
+            <td>ZK coprocessor AVS networks</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>EigenDA</strong> — Eigen Labs' own AVS for data availability — is the largest and most mature
+      AVS on EigenLayer, already used by major L2s as a cheaper alternative to Ethereum calldata.
+      It is the clearest example of how AVS services are structured and what restaking enables.
+    </div>
+  </section>
+
+  <!-- RESTAKING TYPES -->
+  <section class="card" id="restaking-types">
+    <h2>LST Restaking vs Native Restaking: Key Differences and Trade-offs</h2>
+    <p>
+      EigenLayer supports two distinct ways to restake, with meaningfully different mechanics,
+      requirements, and risk profiles.
+    </p>
+
+    <div class="table-wrap">
+      <table aria-label="LST vs native restaking">
+        <thead>
+          <tr><th>Dimension</th><th>LST Restaking</th><th>Native Restaking</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>What you deposit</td>
+            <td>Liquid staking tokens (stETH, rETH, cbETH, etc.)</td>
+            <td>32 ETH directly via an EigenPod</td>
+          </tr>
+          <tr>
+            <td>Validator required?</td>
+            <td class="ok">No — any holder of LSTs can participate</td>
+            <td class="warn">Yes — you must run an Ethereum validator node</td>
+          </tr>
+          <tr class="hi">
+            <td>Minimum stake</td>
+            <td>No enforced minimum beyond gas</td>
+            <td>32 ETH (Ethereum validator requirement)</td>
+          </tr>
+          <tr>
+            <td>Slashing layers</td>
+            <td>LST protocol slashing + EigenLayer slashing</td>
+            <td>Ethereum consensus slashing + EigenLayer slashing</td>
+          </tr>
+          <tr class="hi">
+            <td>Complexity</td>
+            <td class="ok">Low — deposit LST via app</td>
+            <td class="warn">High — requires validator infrastructure</td>
+          </tr>
+          <tr>
+            <td>Reward potential</td>
+            <td>AVS rewards on top of LST yield</td>
+            <td>AVS rewards on top of solo staking yield (higher base)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>For most users:</strong> LST restaking is the practical path. Native restaking is for
+      sophisticated operators who already run their own Ethereum validators and want to maximise
+      yield while retaining full control over the staking relationship.
+    </div>
+  </section>
+
+  <!-- OPERATORS -->
+  <section class="card" id="operators">
+    <h2>EigenLayer Operators: Who They Are, What They Do, and How to Choose One</h2>
+    <p>
+      <strong>Operators</strong> are the entities that run the actual node software for each AVS.
+      They register with EigenLayer, accept delegated stake from restakers, opt into AVS services,
+      and run the required infrastructure in exchange for a share of AVS rewards.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>What operators do</h3>
+        <p style="color:var(--muted)">Register on EigenLayer, maintain validator software for each opted-in AVS, manage stake delegated by restakers, collect AVS rewards and distribute a share to delegators.</p>
+        <div class="kpi-badges"><span>Node operation</span><span>AVS software</span><span>Reward distribution</span></div>
+      </div>
+      <div class="mini">
+        <h3>Choosing an operator safely</h3>
+        <p style="color:var(--muted)">Evaluate operator uptime history, number and quality of AVS services opted into, commission rates, total delegated stake, and whether they have a public track record and transparent operations.</p>
+        <div class="kpi-badges"><span>Uptime history</span><span>AVS diversity</span><span>Commission rate</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Critical risk:</strong> If your chosen operator misbehaves on an AVS — submits invalid data,
+      goes offline at a critical moment, or commits a slashable offence — your restaked ETH is at risk
+      of being slashed. Operator selection is the most important risk management decision for restakers.
+    </div>
+  </section>
+
+  <!-- EIGEN TOKEN -->
+  <section class="card" id="eigen">
+    <h2>EIGEN Token: Utility, Intersubjective Slashing, and Staking</h2>
+    <p>
+      <strong>EIGEN</eigen> is EigenLayer's native token, designed to enable a new category of slashing
+      called <strong>intersubjective slashing</strong> — for faults that cannot be proven on-chain
+      but are objectively observable by the broader community.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Objective vs intersubjective faults</h3>
+        <p style="color:var(--muted)">Objective faults (double signing, provable equivocation) can be slashed directly on Ethereum via smart contracts. Intersubjective faults — like an oracle network consistently reporting wrong prices — are real violations but cannot be proven mathematically on-chain. EIGEN enables community-driven slashing for these cases.</p>
+        <div class="kpi-badges"><span>New fault category</span><span>Community governed</span></div>
+      </div>
+      <div class="mini">
+        <h3>EIGEN staking</h3>
+        <p style="color:var(--muted)">EIGEN holders can stake their tokens to participate in intersubjective fault resolution and earn staking rewards from the protocol. Staked EIGEN also carries slashing risk if the staker validates incorrectly in a dispute resolution process.</p>
+        <div class="kpi-badges"><span>Stake EIGEN</span><span>Dispute resolution</span><span>Slashable</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>EIGEN airdrop:</strong> EigenLayer distributed EIGEN tokens to early restakers via a multi-season
+      airdrop. If you are researching whether you may have unclaimed EIGEN — check the official EigenLayer
+      app only. Post-airdrop phishing sites targeting EIGEN claims are prevalent.
+    </div>
+  </section>
+
+  <!-- REWARDS -->
+  <section class="card" id="rewards">
+    <h2>EigenLayer Rewards: How Stakers and Operators Earn from Restaking</h2>
+
+    <div class="table-wrap">
+      <table aria-label="Reward structure">
+        <thead>
+          <tr><th>Participant</th><th>Reward source</th><th>Paid in</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>Restakers (LST)</td>
+            <td>AVS reward allocations via operator</td>
+            <td>AVS tokens or ETH</td>
+            <td>After operator commission deduction</td>
+          </tr>
+          <tr>
+            <td>Native restakers</td>
+            <td>Consensus rewards + AVS rewards</td>
+            <td>ETH + AVS tokens</td>
+            <td>Higher base yield than LST restakers</td>
+          </tr>
+          <tr class="hi">
+            <td>Operators</td>
+            <td>Commission on delegated stake rewards</td>
+            <td>AVS tokens or ETH</td>
+            <td>Commission rate set by operator</td>
+          </tr>
+          <tr>
+            <td>EIGEN stakers</td>
+            <td>Protocol staking rewards</td>
+            <td>EIGEN</td>
+            <td>For participating in intersubjective security</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Reward variability:</strong> AVS rewards depend entirely on the AVS's reward budget and how
+      many restakers are securing it. As restaked ETH grows, the same reward pool is divided among more
+      participants. Early restakers in high-quality AVS services with fewer competitors capture more reward
+      per ETH than late entrants into crowded AVS pools.
+    </div>
+  </section>
+
+  <!-- SLASHING -->
+  <section class="card" id="slashing">
+    <h2>Slashing on EigenLayer: What Gets Slashed, By How Much, and Under What Conditions</h2>
+    <p>
+      Slashing is EigenLayer's enforcement mechanism — the cost operators pay for dishonest or faulty behaviour.
+      Understanding slashing conditions before restaking is essential, not optional.
+    </p>
+
+    <div class="table-wrap">
+      <table aria-label="Slashing conditions">
+        <thead>
+          <tr><th>Slashing type</th><th>Triggered by</th><th>Who is affected</th><th>Severity</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>Objective AVS slashing</td>
+            <td>Provable on-chain fault by operator (e.g. double-signing, invalid block)</td>
+            <td>Operator + all delegated restakers</td>
+            <td class="err">High — proportional penalty on stake</td>
+          </tr>
+          <tr>
+            <td>Intersubjective slashing</td>
+            <td>Community-observed fault resolved via EIGEN staking governance</td>
+            <td>Operator + restakers (EIGEN holders in dispute)</td>
+            <td class="warn">Medium — defined by AVS parameters</td>
+          </tr>
+          <tr class="hi">
+            <td>Ethereum consensus slashing</td>
+            <td>Ethereum validator equivocation (native restaking only)</td>
+            <td>Native restaker's ETH stake</td>
+            <td class="warn">Medium — Ethereum standard penalties</td>
+          </tr>
+          <tr>
+            <td>LST protocol slashing</td>
+            <td>Underlying LST's own slashing conditions (e.g. Lido validator error)</td>
+            <td>LST value (affects restaker indirectly)</td>
+            <td class="ok">Usually Low — LST protocols have insurance mechanisms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Slashing flows to the restaker:</strong> When an operator is slashed on an AVS,
+      the penalty is deducted from the total stake they manage — including your delegated restaked ETH.
+      You are not insulated from your operator's slashing events. This is the fundamental risk
+      trade-off of restaking that every participant must internalise before committing capital.
+    </div>
+  </section>
+
+  <!-- HOW TO -->
+  <section class="card" id="how-to">
+    <h2>How to Restake on EigenLayer: Step-by-Step Guide for LST Restakers</h2>
+    <ol style="padding-left:1.3rem">
+      <li style="margin-bottom:.6rem"><strong>Go to the official EigenLayer app</strong> — use a bookmarked URL only. Verify the domain before connecting your wallet. Phishing sites targeting EigenLayer users are common.</li>
+      <li style="margin-bottom:.6rem"><strong>Connect a non-custodial wallet</strong> — MetaMask, Rabby, or a hardware wallet for significant amounts.</li>
+      <li style="margin-bottom:.6rem"><strong>Choose LST restaking</strong> — select the liquid staking token you want to restake (stETH, rETH, cbETH, etc.) and approve the EigenLayer contract to interact with it.</li>
+      <li style="margin-bottom:.6rem"><strong>Deposit your LSTs</strong> — confirm the deposit transaction. Your tokens are now held in EigenLayer's strategy contracts and eligible for delegation.</li>
+      <li style="margin-bottom:.6rem"><strong>Research and select an operator</strong> — review operators by total delegated stake, AVS coverage, commission rate, and operational track record. This is the most important decision you make.</li>
+      <li style="margin-bottom:.6rem"><strong>Delegate to your chosen operator</strong> — confirm the delegation transaction. Your restaked ETH now backs that operator's AVS validation work.</li>
+      <li style="margin-bottom:.6rem"><strong>Monitor rewards and operator health</strong> — check the EigenLayer dashboard periodically for reward accrual and operator performance metrics.</li>
+      <li><strong>To exit:</strong> undelegate from the operator (subject to a withdrawal delay), then withdraw your LSTs from EigenLayer. Plan the exit around the undelegation queue timeline.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Withdrawal queue:</strong> EigenLayer has a withdrawal waiting period after undelegation.
+      This is intentional — it allows AVS services time to recognise that the stake is leaving
+      and adjust their security accordingly. Factor this illiquidity into your restaking strategy.
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="card" id="safety">
+    <h2>EigenLayer Risks: Slashing, Smart-Contract, Operator, and Systemic Risks</h2>
+
+    <div class="table-wrap">
+      <table aria-label="Risk analysis">
+        <thead>
+          <tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>Operator slashing event</td>
+            <td class="err">High if operator misbehaves</td>
+            <td>Carefully vet operators; diversify across multiple operators</td>
+          </tr>
+          <tr>
+            <td>Smart-contract exploit</td>
+            <td class="warn">Medium</td>
+            <td>Multiple audits; large bug bounty; significant battle-testing</td>
+          </tr>
+          <tr class="hi">
+            <td>AVS software bug causing slashing</td>
+            <td class="warn">Medium</td>
+            <td>Choose operators running mature, audited AVS services</td>
+          </tr>
+          <tr>
+            <td>Withdrawal queue delay</td>
+            <td class="warn">Medium</td>
+            <td>Plan exits in advance; do not restake capital needed on short notice</td>
+          </tr>
+          <tr class="hi">
+            <td>LST de-peg (LST restaking)</td>
+            <td class="warn">Low-Medium</td>
+            <td>Choose well-established LSTs with deep liquidity (stETH, rETH)</td>
+          </tr>
+          <tr>
+            <td>Cascading slash contagion</td>
+            <td class="warn">Low — theoretical systemic risk</td>
+            <td>Emerging risk as TVL grows; monitor protocol governance for mitigations</td>
+          </tr>
+          <tr class="hi">
+            <td>Phishing / fake EigenLayer UI</td>
+            <td class="err">High (user-controlled)</td>
+            <td>Bookmark official URL; verify domain before every session</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="card" id="comparison">
+    <h2>EigenLayer vs Symbiotic vs Karak: Restaking Protocol Comparison</h2>
+
+    <div class="table-wrap">
+      <table aria-label="Restaking protocol comparison">
+        <thead>
+          <tr><th>Feature</th><th>EigenLayer</th><th>Symbiotic</th><th>Karak</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hi">
+            <td>Backing / origin</td>
+            <td>Eigen Labs (a16z backed)</td>
+            <td>Paradigm &amp; cyberfund backed</td>
+            <td>Various backers</td>
+          </tr>
+          <tr>
+            <td>Supported assets</td>
+            <td>ETH, major LSTs</td>
+            <td>ETH, LSTs, ERC-20s broadly</td>
+            <td>ETH, LSTs, ERC-20s</td>
+          </tr>
+          <tr class="hi">
+            <td>Chain focus</td>
+            <td>Ethereum-centric</td>
+            <td>Chain-agnostic</td>
+            <td>Multi-chain</td>
+          </tr>
+          <tr>
+            <td>AVS ecosystem</td>
+            <td class="ok">Largest — most mature AVS set</td>
+            <td class="warn">Growing</td>
+            <td class="warn">Growing</td>
+          </tr>
+          <tr class="hi">
+            <td>Native token</td>
+            <td class="ok">EIGEN (intersubjective slashing)</td>
+            <td class="warn">TBD</td>
+            <td class="warn">TBD</td>
+          </tr>
+          <tr>
+            <td>TVL (as of 2026)</td>
+            <td class="ok">Largest</td>
+            <td class="warn">Significant</td>
+            <td class="warn">Smaller</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note" style="margin-top:1rem">
+      <strong>EigenLayer's moat:</strong> First-mover advantage, the largest AVS ecosystem,
+      and EIGEN's unique intersubjective slashing design give EigenLayer structural advantages.
+      Symbiotic's chain-agnostic and broader collateral model appeals to protocols outside Ethereum.
+      Competition benefits restakers through better rates and more AVS options over time.
+    </div>
+  </section>
+
+  <!-- BEST PRACTICES -->
+  <section class="card" id="best-practices">
+    <h2>Best Practices for EigenLayer Restakers and Delegators</h2>
+    <ul style="padding-left:1.2rem">
+      <li style="margin-bottom:.5rem"><strong>Treat operator selection as a security decision</strong> — not just a yield decision. A high-APR operator running buggy or unaudited AVS software is a slashing risk, not an opportunity.</li>
+      <li style="margin-bottom:.5rem"><strong>Diversify across multiple operators</strong> for significant positions — concentrating all restaked ETH with one operator means one slashing event can affect your entire position.</li>
+      <li style="margin-bottom:.5rem"><strong>Only restake ETH you don't need quickly</strong> — the withdrawal queue means restaked capital is illiquid for a defined period. Never restake emergency or short-term funds.</li>
+      <li style="margin-bottom:.5rem"><strong>Monitor operator AVS opt-ins over time</strong> — operators can opt into new AVS services after you delegate. New AVS services mean new slashing conditions you didn't originally accept. Review regularly.</li>
+      <li style="margin-bottom:.5rem"><strong>Bookmark the official EigenLayer app URL</strong> — phishing is the most common user-controlled risk. Verify the domain every session.</li>
+      <li style="margin-bottom:.5rem"><strong>Revoke approvals after exiting</strong> — EigenLayer strategy contracts require token approvals. Use Revoke.cash to clean up after withdrawal.</li>
+      <li><strong>Use a hardware wallet</strong> for material restaking positions — the combination of approval transactions, delegation, and withdrawal makes this a high-interaction protocol.</li>
+    </ul>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="card" id="troubleshooting">
+    <h2>Troubleshooting EigenLayer: Missing Rewards, Withdrawal Queues, and Delegation Issues</h2>
+
+    <h3>"I'm not seeing any rewards after restaking"</h3>
+    <ul style="padding-left:1.2rem">
+      <li>Rewards require full delegation to an operator who is actively opted into at least one live AVS. Simply depositing LSTs without delegating earns no AVS rewards.</li>
+      <li>AVS rewards are distributed on a per-reward-period cadence — not continuously. Check the official EigenLayer app's rewards dashboard for your accrual status.</li>
+      <li>Some AVS services have qualification criteria (minimum stake, minimum time delegated) before reward eligibility begins.</li>
+    </ul>
+
+    <h3>"My withdrawal is taking longer than expected"</h3>
+    <ul style="padding-left:1.2rem">
+      <li>The withdrawal queue is protocol-enforced and intentional. Check the current queue duration in the official EigenLayer app — it is displayed when you initiate an undelegation.</li>
+      <li>Ensure you have completed both steps: undelegating from the operator AND submitting the withdrawal transaction once the queue clears. Missing the second step is common.</li>
+    </ul>
+
+    <h3>"I delegated to an operator but they appear inactive"</h3>
+    <ul style="padding-left:1.2rem">
+      <li>Verify the operator's status on the official EigenLayer operator dashboard — some operators may have reduced AVS opt-ins over time.</li>
+      <li>If an operator is fully inactive, consider undelegating and re-delegating to an active operator. This restarts your withdrawal queue for the exit, so plan accordingly.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Always verify on-chain:</strong> The EigenLayer UI can lag behind contract state.
+      For withdrawal status, check the EigenLayer smart contract state via Etherscan if the UI is unclear.
+      Never share your seed phrase or private key with anyone claiming to be EigenLayer support.
+    </div>
+  </section>
+
+  <!-- EEAT -->
+  <section class="eeat" id="eeat" aria-labelledby="eeat-title">
+    <h2 id="eeat-title">EigenLayer: Authoritative References &amp; External Sources</h2>
+
+    <h3>EigenLayer — Official Sources</h3>
+    <ul style="padding-left:1.2rem">
+      <li><a href="https://www.eigenlayer.xyz/" target="_blank" rel="noopener nofollow">EigenLayer — Official Website</a></li>
+      <li><a href="https://docs.eigenlayer.xyz/" target="_blank" rel="noopener nofollow">EigenLayer — Official Documentation</a></li>
+      <li><a href="https://github.com/Layr-Labs" target="_blank" rel="noopener nofollow">EigenLayer — Smart Contracts (GitHub)</a></li>
+      <li><a href="https://forum.eigenlayer.xyz/" target="_blank" rel="noopener nofollow">EigenLayer — Governance &amp; Research Forum</a></li>
+    </ul>
+
+    <h3>Restaking Research &amp; Data</h3>
+    <ul style="padding-left:1.2rem">
+      <li><a href="https://defillama.com/protocol/eigenlayer" target="_blank" rel="noopener nofollow">DeFiLlama — EigenLayer TVL &amp; Protocol Data</a></li>
+      <li><a href="https://dune.com/browse/dashboards" target="_blank" rel="noopener nofollow">Dune Analytics — EigenLayer On-chain Dashboards</a></li>
+      <li><a href="https://ethereum.org/en/staking/" target="_blank" rel="noopener nofollow">Ethereum.org — Ethereum Staking Overview</a></li>
+    </ul>
+
+    <h3>Security &amp; Risk Research</h3>
+    <ul style="padding-left:1.2rem">
+      <li><a href="https://blog.openzeppelin.com/security-audits" target="_blank" rel="noopener nofollow">OpenZeppelin — Smart Contract Security Audits</a></li>
+      <li><a href="https://rekt.news/" target="_blank" rel="noopener nofollow">Rekt.news — DeFi Exploit Post-Mortems</a></li>
+      <li><a href="https://revoke.cash/" target="_blank" rel="noopener nofollow">Revoke.cash — Token Approval Manager</a></li>
+    </ul>
+
+    <div class="note" style="margin-top:1.2rem">
+      <strong>About:</strong> Prepared by Crypto Finance Experts as a practical, SEO-oriented knowledge base
+      for <em>EigenLayer</em>: restaking mechanics, AVS, operators, EIGEN token, slashing, rewards, and security.
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="card" id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title" style="margin-top:0;border-top:none;padding-top:0">EigenLayer: Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f1" id="b1">
+        <h3>What is EigenLayer and what is restaking?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f1" class="faq-content" role="region" aria-labelledby="b1">
+        <p>EigenLayer is a protocol on Ethereum that allows ETH stakers and liquid staking token holders to "restake" — extending their staked ETH's cryptoeconomic security to additional decentralised services called AVS (Actively Validated Services). Restakers earn additional rewards beyond base ETH staking yield in exchange for accepting additional slashing conditions tied to the AVS services their chosen operator validates.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f2" id="b2">
+        <h3>What is an AVS and why does it need restaked ETH?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f2" class="faq-content" role="region" aria-labelledby="b2">
+        <p>An Actively Validated Service (AVS) is any decentralised protocol — data availability layer, oracle, bridge, sequencer — that needs a network of validators with economic stake at risk to ensure honest behaviour. By using EigenLayer, an AVS can tap into Ethereum's existing staked ETH pool for security instead of bootstrapping its own validator set from scratch. This gives AVS services immediate, credible cryptoeconomic security on launch.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f3" id="b3">
+        <h3>Can I lose my ETH by restaking on EigenLayer?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f3" class="faq-content" role="region" aria-labelledby="b3">
+        <p>Yes — restaked ETH is subject to slashing if the operator you delegated to commits a slashable offence on an AVS. Slashing penalties are deducted from the total stake the operator manages, including your delegated portion. This is the fundamental risk trade-off of restaking. Carefully vetting your operator and diversifying across multiple operators are the primary risk mitigations available to restakers.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f4" id="b4">
+        <h3>What is the EIGEN token and how is it different from restaked ETH?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f4" class="faq-content" role="region" aria-labelledby="b4">
+        <p>EIGEN is EigenLayer's native token designed to enable "intersubjective slashing" — penalising faults that are obvious to humans but cannot be proven on-chain algorithmically (like an oracle network consistently providing wrong data). Restaked ETH handles objective, provably on-chain faults. EIGEN handles the grey-area human-observable faults. The two systems work in parallel to cover different categories of validator misbehaviour.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f5" id="b5">
+        <h3>What is the difference between LST restaking and native restaking?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f5" class="faq-content" role="region" aria-labelledby="b5">
+        <p>LST restaking means depositing liquid staking tokens (stETH, rETH, cbETH) into EigenLayer — accessible to anyone without running a validator. Native restaking means restaking 32 ETH directly via an EigenPod while running your own Ethereum validator node — higher complexity, higher base yield, and maximum control. Most retail participants use LST restaking; native restaking is for sophisticated operators.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f6" id="b6">
+        <h3>How long does it take to withdraw from EigenLayer?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f6" class="faq-content" role="region" aria-labelledby="b6">
+        <p>EigenLayer enforces a withdrawal queue after undelegation — the exact duration is protocol-defined and displayed in the app when you initiate an exit. This delay is intentional: it allows AVS services to recognise the departing stake and adjust security parameters. Plan exits in advance and never restake capital you may need on short notice.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f7" id="b7">
+        <h3>How do I earn rewards on EigenLayer?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f7" class="faq-content" role="region" aria-labelledby="b7">
+        <p>To earn AVS rewards: deposit LSTs or ETH into EigenLayer, then delegate to an active operator who has opted into live AVS services. Rewards flow from the AVS to the operator, who distributes a share (minus their commission) to delegators. Simply depositing without delegating earns no AVS rewards. Reward rates vary by AVS and how many restakers are competing for each AVS's reward pool.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f8" id="b8">
+        <h3>How is EigenLayer different from regular ETH staking?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f8" class="faq-content" role="region" aria-labelledby="b8">
+        <p>Regular ETH staking secures only Ethereum consensus and earns only Ethereum staking rewards. EigenLayer restaking additionally commits your stake to securing AVS services — earning extra rewards but accepting additional slashing risk from those AVS services. Regular staking has one slashing surface (Ethereum); restaking adds one or more additional slashing surfaces (each opted-in AVS). More reward = more risk.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f9" id="b9">
+        <h3>Is EigenLayer audited and safe to use?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f9" class="faq-content" role="region" aria-labelledby="b9">
+        <p>EigenLayer's smart contracts have undergone multiple security audits and the protocol has processed billions in restaked ETH. However, the protocol's complexity — multiple interacting contracts, operator delegation mechanics, and diverse AVS integrations — means smart-contract risk is non-trivial. Phishing is the primary user-controlled risk. Always access EigenLayer via a bookmarked official URL and verify the domain before every wallet connection.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container" role="contentinfo" style="padding:2.5rem 0; border-top:1px solid var(--line); margin-top:2rem">
+  <p style="color:var(--dim); font-size:.93rem">© 2026 EigenLayer Guide. Educational content with a security-first operational focus. Not financial advice.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-button').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        const c = document.getElementById(b.getAttribute('aria-controls'));
+        c.classList.remove('open'); c.style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        btn.setAttribute('aria-expanded', 'true');
+        const content = document.getElementById(btn.getAttribute('aria-controls'));
+        content.classList.add('open');
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
